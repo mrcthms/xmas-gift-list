@@ -10,7 +10,7 @@ var buildPath = './public/';
 gulp.task('auto-reload', loadLmnTask('auto-reload'));
 
 gulp.task('js', ['js-quality'], loadLmnTask('browserify', {
-  src: './src/js/react.js',
+  src: './src/js/app/main.jsx',
   dest: path.join(buildPath, 'js/bundle.js'),
   react: true
 }));
@@ -27,12 +27,12 @@ gulp.task('scss', loadLmnTask('scss', {
 
 gulp.task('build', ['js', 'scss']);
 
-gulp.task('move-html', loadLmnTask('copy', {
-  src: 'index.html',
-  dest: buildPath,
-  rev: false,
-  flatten: false
-}));
+// gulp.task('move-html', loadLmnTask('copy', {
+//   src: 'views/**/*.html',
+//   dest: buildPath,
+//   rev: false,
+//   flatten: false
+// }));
 
 gulp.task('default', ['build'], function () {
   var config = {
@@ -66,5 +66,5 @@ gulp.task('default', ['build'], function () {
   gulp.watch('./src/js/**/*.js{on,x,}', ['js']);
   // gulp.watch('./src/partials/partial.erb.html', ['html']);
   // gulp.watch('./demo/base.erb.html', ['html']);
-  gulp.watch('./index.html', ['move-html']);
+  // gulp.watch('./views/**/*.html', ['move-html']);
 });

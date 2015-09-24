@@ -1,7 +1,7 @@
 import React from 'react';
 
-export var LineItem = React.createClass({
-  render: function () {
+class LineItem extends React.Component {
+  render() {
     return (
       <div className="line-item">
         <span className="line-item__meta">
@@ -14,4 +14,6 @@ export var LineItem = React.createClass({
       </div>
     );
   }
-});
+};
+
+export default LineItem;

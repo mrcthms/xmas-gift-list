@@ -1,14 +1,18 @@
 import React from 'react';
-import { AddItemForm } from './add-item-form.jsx';
-import { List } from './list.jsx';
+import { RouteHandler } from 'react-router';
+import Footer from './footer.jsx';
+import Navbar from  './navbar.jsx';
 
-export var App = React.createClass({
-  render: function () {
+class App extends React.Component {
+  render() {
     return (
       <div className="xmas-list">
-        <List />
-        <AddItemForm />
+        <Navbar />
+        <RouteHandler />
+        <Footer />
       </div>
     );
   }
-});
+}
+
+export default App;
