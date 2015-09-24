@@ -1,0 +1,23 @@
+{
+  "name": "xmas-gift-list",
+  "version": "0.0.1",
+  "description": "",
+  "author": "mrcthms",
+  "dependencies": {
+    "browserify": "^6.2.0",
+    "jquery": "^1.11.2",
+    "lmn-gulp-tasks": "git://github.com/Lostmyname/lmn-gulp-tasks.git#master"
+  },
+  "devDependencies": {
+    "babelify": "^6.3.0",
+    "browser-sync": "^1.5.1",
+    "gulp": "^3.8.8",
+    "lmn-gulp-tasks": "git://github.com/Lostmyname/lmn-gulp-tasks.git#master",
+    "react": "^0.13.3"
+  },
+  "scripts": {
+    "commit": "git commit -am 'Update data' && git push"
+  },
+  "license": "MIT",
+  "private": true
+}
