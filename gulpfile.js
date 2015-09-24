@@ -5,7 +5,7 @@ var browserSync = require('browser-sync');
 var gulp = require('gulp');
 var loadLmnTask = require('lmn-gulp-tasks');
 
-var buildPath = './demo/build/';
+var buildPath = './public/';
 
 gulp.task('auto-reload', loadLmnTask('auto-reload'));
 
