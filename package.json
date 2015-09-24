@@ -23,7 +23,7 @@
     "react": "^0.13.3"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "babel-node server.js"
   },
   "license": "MIT",
   "private": true
