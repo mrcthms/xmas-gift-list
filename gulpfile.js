@@ -29,16 +29,18 @@ gulp.task('build', ['js', 'scss']);
 
 gulp.task('move-html', loadLmnTask('copy', {
   src: 'index.html',
-  dest: path.join(buildPath, 'index.html'),
+  dest: buildPath,
   rev: false,
   flatten: false
 }));
 
 gulp.task('default', ['build'], function () {
   var config = {
-    server: {
-      baseDir: '.'
-    },
+    // server: {
+    //   baseDir: '.'
+    // },
+    proxy: 'localhost:6789',
+    open: false,
     ghostMode: {
       scroll: false,
       links: false,
@@ -61,7 +63,7 @@ gulp.task('default', ['build'], function () {
 
 
   gulp.watch('./src/scss/**/*.{sass,scss}', ['scss']);
-  gulp.watch('./src/**/*.js{on,x,}', ['js']);
+  gulp.watch('./src/js/**/*.js{on,x,}', ['js']);
   // gulp.watch('./src/partials/partial.erb.html', ['html']);
   // gulp.watch('./demo/base.erb.html', ['html']);
   gulp.watch('./index.html', ['move-html']);

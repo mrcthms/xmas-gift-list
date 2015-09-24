@@ -19871,19 +19871,44 @@ module.exports = require('./lib/React');
 },{"./lib/React":29}],157:[function(require,module,exports){
 'use strict';
 
+exports.__esModule = true;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _viewJsx = require('./view.jsx');
+var AddItemForm = _react2['default'].createClass({
+  displayName: 'AddItemForm',
 
-_react2['default'].render(_react2['default'].createElement(_viewJsx.MyView, null), document.getElementById('react-wrapper'));
-_react2['default'].render(_react2['default'].createElement(_viewJsx.AddItemForm, null), document.getElementById('react-wrapper'));
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    var url = _react2['default'].findDOMNode(this.refs.url).value.trim();
+    var cost = _react2['default'].findDOMNode(this.refs.price).value.trim();
+    if (!url || !price) {
+      return;
+    }
+    _react2['default'].findDOMNode(this.refs.url).value = '';
+    _react2['default'].findDOMNode(this.refs.price).value = '';
+    return;
+  },
+  render: function render() {
+    return _react2['default'].createElement(
+      'form',
+      { className: 'add-item', onSubmit: this.handleSubmit },
+      _react2['default'].createElement('input', { type: 'text', placeholder: 'URL of item', ref: 'url' }),
+      _react2['default'].createElement('input', { type: 'text', placeholder: 'Cost of item', ref: 'price' }),
+      _react2['default'].createElement('input', { type: 'text', placeholder: 'Assignee', ref: 'assignee' }),
+      _react2['default'].createElement('input', { type: 'text', placeholder: 'Status', ref: 'status' }),
+      _react2['default'].createElement('input', { type: 'submit', value: 'Add Item' })
+    );
+  }
+});
+exports.AddItemForm = AddItemForm;
 
 
-},{"./view.jsx":158,"react":156}],158:[function(require,module,exports){
+},{"react":156}],158:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -19894,47 +19919,121 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var MyView = _react2['default'].createClass({
-  displayName: 'MyView',
+var _addItemFormJsx = require('./add-item-form.jsx');
+
+var _listJsx = require('./list.jsx');
+
+var App = _react2['default'].createClass({
+  displayName: 'App',
 
   render: function render() {
     return _react2['default'].createElement(
       'div',
-      null,
-      'Hello World'
+      { className: 'xmas-list' },
+      _react2['default'].createElement(_listJsx.List, null),
+      _react2['default'].createElement(_addItemFormJsx.AddItemForm, null)
     );
   }
 });
+exports.App = App;
 
-exports.MyView = MyView;
-var AddItemForm = _react2['default'].createClass({
-  displayName: 'AddItemForm',
 
-  handleSubmit: function handleSubmit(e) {
-    e.preventDefault();
-    var url = _react2['default'].findDOMNode(this.refs.url).value.trim();
-    var cost = _react2['default'].findDOMNode(this.refs.cost).value.trim();
-    if (!url || !cost) {
-      return;
-    }
-    _react2['default'].findDOMNode(this.refs.url).value = '';
-    _react2['default'].findDOMNode(this.refs.cost).value = '';
-    return;
-  },
+},{"./add-item-form.jsx":157,"./list.jsx":160,"react":156}],159:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var LineItem = _react2["default"].createClass({
+  displayName: "LineItem",
+
+  render: function render() {
+    return _react2["default"].createElement(
+      "div",
+      { className: "line-item" },
+      _react2["default"].createElement(
+        "span",
+        { className: "line-item__meta" },
+        _react2["default"].createElement(
+          "span",
+          { className: "line-item__title", ref: "title" },
+          this.props.title
+        ),
+        _react2["default"].createElement(
+          "span",
+          { className: "line-item__price", ref: "source" },
+          this.props.source
+        )
+      ),
+      _react2["default"].createElement(
+        "span",
+        { className: "line-item__price", ref: "price" },
+        this.props.price
+      ),
+      _react2["default"].createElement(
+        "span",
+        { className: "line-item__assignee", ref: "assignee" },
+        this.props.assignee
+      ),
+      _react2["default"].createElement(
+        "span",
+        { className: "line-item__status", ref: "status" },
+        this.props.status
+      )
+    );
+  }
+});
+exports.LineItem = LineItem;
+
+
+},{"react":156}],160:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lineItemJsx = require('./line-item.jsx');
+
+var List = _react2['default'].createClass({
+  displayName: 'List',
+
   render: function render() {
     return _react2['default'].createElement(
-      'form',
-      { className: 'addItem', onSubmit: this.handleSubmit },
-      _react2['default'].createElement('input', { type: 'text', placeholder: 'URL of item', ref: 'url' }),
-      _react2['default'].createElement('input', { type: 'text', placeholder: 'Cost of item', ref: 'cost' }),
-      _react2['default'].createElement('input', { type: 'submit', value: 'Add Item' })
+      'div',
+      { className: 'list' },
+      _react2['default'].createElement(_lineItemJsx.LineItem, { title: 'Xbox', source: 'amazon', price: '£19.99', assignee: 'Marc', status: 'To Buy' }),
+      _react2['default'].createElement(_lineItemJsx.LineItem, { title: 'iPhone 6s', source: 'apple', price: '£519.99', assignee: 'Amy', status: 'Bought' })
     );
   }
 });
-exports.AddItemForm = AddItemForm;
+exports.List = List;
 
 
-},{"react":156}],159:[function(require,module,exports){
+},{"./line-item.jsx":159,"react":156}],161:[function(require,module,exports){
+'use strict';
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _componentsAppJsx = require('./components/app.jsx');
+
+_react2['default'].render(_react2['default'].createElement(_componentsAppJsx.App, null), document.getElementById('react-wrapper'));
+
+
+},{"./components/app.jsx":158,"react":156}],162:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v1.11.3
  * http://jquery.com/
@@ -30287,7 +30386,7 @@ return jQuery;
 
 }));
 
-},{}]},{},[157])
+},{}]},{},[161])
 
 
 //# sourceMappingURL=bundle.js.map
