@@ -10,14 +10,17 @@
     "babel": "^5.6.23",
     "body-parser": "^1.13.2",
     "browserify": "^6.2.0",
+    "express": "^4.13.1",
+    "jquery": "^1.11.2",
+    "lmn-gulp-tasks": "git://github.com/Lostmyname/lmn-gulp-tasks.git#master",
+    "mongoose": "^4.0.7",
+    "mongoose-uniqueid": "0.0.5",
     "react": "^0.13.3",
     "react-router": "^0.13.3",
-    "express": "^4.13.1",
-    "swig": "^1.4.2",
-    "mongoose": "^4.0.7",
+    "request": "^2.58.0",
     "socket.io": "^1.3.6",
-    "jquery": "^1.11.2",
-    "lmn-gulp-tasks": "git://github.com/Lostmyname/lmn-gulp-tasks.git#master"
+    "swig": "^1.4.2",
+    "xml2js": "^0.4.9"
   },
   "devDependencies": {
     "babelify": "^6.3.0",
