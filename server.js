@@ -26,6 +26,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/api/items', function (req, res, next) {
+  Item.find({}, function (err, items) {
+    console.log(items);
+
+    if (err) {
+      return next(err);
+    }
+
+    if (!items) {
+      return res.status(404).send({ message: 'No items found.' });
+    }
+
+    res.send(items);
+  });
+});
+
 /**
  * POST /api/items
  * Adds new items to the database
@@ -36,13 +52,15 @@ app.post('/api/items', function (req, res, next) {
   var price = req.body.price;
   var isBought = req.body.isBought;
   var assignee = req.body.assignee;
+  var whoFor = req.body.whoFor;
 
   var item = new Item({
     name: name,
     url: url,
     price: price,
     isBought: isBought,
-    assignee: assignee
+    assignee: assignee,
+    whoFor: whoFor
   });
 
   item.save(function (err) {
@@ -70,17 +88,17 @@ app.get('/api/items/count', function (req, res, next) {
   });
 });
 
-app.get('/api/items/remove-all', function (req, res) {
+app.get('/api/items/seek-and-destroy-all', function (req, res) {
   Item.find({}).remove().exec();
   res.send({
     message: 'All items deleted'
   });
 });
 
-app.get('/api/items/:name', function (req, res, next) {
-  var name = req.params.name;
+app.get('/api/items/:id', function (req, res, next) {
+  var id = req.params.id;
   Item.findOne({
-    name: name
+    _id: id
   }, function (err, item) {
 
     if (err) {
@@ -91,6 +109,48 @@ app.get('/api/items/:name', function (req, res, next) {
     }
 
     res.send(item);
+  });
+});
+
+app.put('/api/items/:id/:prop', function (req, res, next) {
+  var id = req.params.id;
+  var prop = req.params.prop;
+  // var name = req.body.name;
+  // var url = req.body.url;
+  // var price = req.body.price;
+  // var isBought = req.body.isBought;
+  // var assignee = req.body.assignee;
+  // var whoFor = req.body.whoFor;
+  var newValue = req.body[prop];
+  Item.findOne({
+    _id: id
+  }, function (err, item) {
+    // item.name = name;
+    // item.url = url;
+    // item.price = price;
+    // item.isBought = isBought;
+    // item.assignee = assignee;
+    // item.whoFor = whoFor;
+    item[prop] = newValue;
+
+    item.save(function (err) {
+      if (err) {
+        return next(err);
+      }
+      res.status(200).end();
+    });
+  });
+});
+
+app.get('/api/items/:id/seek-and-destroy', function (req, res, next) {
+  var id = req.params.id;
+  var item = Item.findOne({
+    _id: id
+  });
+  var itemName = item.name;
+  item.remove().exec();
+  res.send({
+    message: itemName + ' has been removed'
   });
 });
 

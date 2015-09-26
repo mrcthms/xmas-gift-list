@@ -63,7 +63,7 @@ class AddItem extends React.Component {
     }
 
     if (canSubmit === true) {
-      AddItemActions.addItem(name, url, price, isBought, assignee, whoFor);
+      AddItemActions.addItem(name, url, price, isBought, assignee, whoFor, this.refs);
     }
   }
 
@@ -97,6 +97,11 @@ class AddItem extends React.Component {
                     <input type='text' className='form-control' ref='whoFor' value={this.state.whoFor}
                            onChange={AddItemActions.updateWhoFor} />
                   </div>
+                  <div className={'form-group ' + this.state.assigneeValidationState}>
+                    <label className='control-label'>Item Assignee</label>
+                    <input type='text' className='form-control' ref='assignee' value={this.state.assignee}
+                           onChange={AddItemActions.updateAssignee} />
+                  </div>
                   <div className={'form-group ' + this.state.isBoughtValidationState}>
                     <label className='control-label'>Item Status</label>
                     <div className='checkbox'>
@@ -105,11 +110,6 @@ class AddItem extends React.Component {
                            onChange={AddItemActions.updateIsBought} /> Bought?
                       </label>
                     </div>
-                  </div>
-                  <div className={'form-group ' + this.state.assigneeValidationState}>
-                    <label className='control-label'>Item Assignee</label>
-                    <input type='text' className='form-control' ref='url' value={this.state.assignee}
-                           onChange={AddItemActions.updateAssignee} />
                   </div>
                   <button type='submit' className='btn btn-primary'>Submit</button>
                 </form>

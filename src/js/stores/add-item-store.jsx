@@ -1,5 +1,6 @@
 import alt from '../alt.jsx';
 import $ from 'jquery';
+import React from 'react';
 import AddItemActions from '../actions/add-item-actions.jsx';
 
 class AddItemStore {
@@ -10,6 +11,7 @@ class AddItemStore {
     this.price = '';
     this.isBought = false;
     this.assignee = '';
+    this.whoFor = '';
     this.helpBlock = '';
     this.nameValidationState = '';
     this.urlValidationState = '';
@@ -29,6 +31,15 @@ class AddItemStore {
     this.helpBlock = errorMessage;
   }
 
+  onClearFields(refs) {
+    console.log(refs);
+
+    var fields = ['name', 'url', 'price', 'isBought', 'assignee', 'whoFor'];
+    fields.forEach((field) => {
+      React.findDOMNode(refs[field]).value = '';
+    });
+  }
+
   onUpdateName(evt) {
     this.name = evt.target.value;
     this.nameValidationState = '';
@@ -46,7 +57,7 @@ class AddItemStore {
   }
 
   onUpdateIsBought(evt) {
-    this.isBought = evt.target.value;
+    this.isBought = evt.target.value === true ? 'Yes' : 'No';
     this.isBoughtValidationState = '';
   }
 

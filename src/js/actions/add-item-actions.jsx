@@ -6,6 +6,7 @@ class AddItemActions {
     this.generateActions(
       'addItemSuccess',
       'addItemFail',
+      'clearFields',
       'updateName',
       'updateUrl',
       'updatePrice',
@@ -21,7 +22,7 @@ class AddItemActions {
     );
   }
 
-  addItem(name, url, price, isBought, assignee, whoFor) {
+  addItem(name, url, price, isBought, assignee, whoFor, refs) {
     $.ajax({
       type: 'POST',
       url: '/api/items/',
@@ -29,6 +30,7 @@ class AddItemActions {
     })
       .done((data) => {
         this.actions.addItemSuccess(data.message);
+        this.actions.clearFields(refs);
       })
       .fail((jqXhr) => {
         this.actions.addItemFail(jqXhr.responseJSON.message);

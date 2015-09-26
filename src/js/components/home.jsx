@@ -1,11 +1,11 @@
 import React from 'react';
-import List from './list.jsx';
+import ItemList from './item-list.jsx';
 
 class Home extends React.Component {
   render() {
     return (
       <div className="xmas-list">
-        <List />
+        <ItemList />
       </div>
     );
   }
