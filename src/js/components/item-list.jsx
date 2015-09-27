@@ -36,7 +36,7 @@ class ItemList extends React.Component {
     console.log(this.state);
     var itemsList = this.state.items.map((item) => {
       return (
-        <Item key={ item._id } />
+        <Item id={ item._id } key={ item._id } />
       );
     }) || [];
 

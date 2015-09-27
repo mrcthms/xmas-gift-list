@@ -35,6 +35,7 @@ class Item extends React.Component {
   }
 
   onChange(state) {
+    console.log('item', state);
     this.setState(state);
   }
 
