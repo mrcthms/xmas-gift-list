@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import React from 'react';
+import { Link } from 'react-router';
 
 class LineItem extends React.Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class LineItem extends React.Component {
           <span className='line-item__label'>Is it bought?</span>
           <span className='line-item__value'>{this.props.isBought === true ? 'Yes' : 'No'}</span>
         </span>
-        <span className='line-item__id'>{this.props._id}</span>
+        <Link className='line-item__id' to={'/items/' + this.props._id}>{this.props._id}</Link>
       </div>
     );
   }

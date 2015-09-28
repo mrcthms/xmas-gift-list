@@ -9,9 +9,21 @@ var request = require('request');
 var xml2js = require('xml2js');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var mongoose = require('mongoose');
 var Item = require('./models/item');
+var User = require('./models/user');
+var pass = require('./pass');
 var config = require('./config');
+
+function restrict(req, res, next) {
+  if (req.session.user) {
+    next();
+  } else {
+    req.session.error = 'Access denied';
+    res.redirect('/login');
+  }
+}
 
 mongoose.connect(config.database);
 mongoose.connection.on('error', function () {
@@ -24,7 +36,29 @@ app.set('port', process.env.PORT || 6789);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+// Session
+app.use(session({
+  resave: true,
+  saveUninitialized: false,
+  secret: 'ssh, it is a secret'
+}));
+// Session persisted message middleware
+app.use(function (req, res, next) {
+  var err = req.session.error;
+  var msg = req.session.success;
+  delete req.session.error;
+  delete req.session.success;
+  res.locals.message = '';
+  if (err) {
+    res.locals.message = '<p class="msg msg--error">' +  err +  '</p>';
+  }
+  if (msg) {
+    res.locals.message = '<p class="msg msg--success">' + msg + '</p>';
+  }
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get('/api/items', function (req, res, next) {
   Item.find({}, function (err, items) {
@@ -72,6 +106,8 @@ app.post('/api/items', function (req, res, next) {
   });
 });
 
+
+
 /**
  * GET /api/items/count
  * Returns the total number of items
@@ -103,6 +139,9 @@ app.get('/api/items/:id', function (req, res, next) {
     if (err) {
       return next(err);
     }
+    item._creator = req.session.user;
+    console.log(item, req.session);
+    //console.log(item._creator.username);
     if (!item) {
       return res.status(404).send({ message: 'Item not found.' });
     }
@@ -115,14 +154,10 @@ app.put('/api/items/:id/:prop', function (req, res, next) {
   var id = req.params.id;
   var prop = req.params.prop;
   var newValue = req.body[prop];
-
-  //console.log(req, prop, newValue);
   Item.findOne({
     _id: id
   }, function (err, item) {
-    console.log(item);
     item[prop] = newValue;
-    console.log(item);
     item.save(function (err) {
       if (err) {
         return next(err);
@@ -141,6 +176,50 @@ app.get('/api/items/:id/seek-and-destroy', function (req, res, next) {
   item.remove().exec();
   res.send({
     message: itemName + ' has been removed'
+  });
+});
+
+app.get('/create-admin-user', function (req, res, next) {
+  var user = new User();
+  user.username = 'marc';
+  pass.hash('password', function (err, salt, hash) {
+    if (err) {
+      console.log(err);
+    }
+    user.salt = salt;
+    user.hash = hash;
+    user.save(function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('user saved');
+        res.status(200).end();
+      }
+    });
+  });
+});
+
+
+app.post('/api/login', function (req, res) {
+  pass.authenticate(req.body.username, req.body.password, function (err, user) {
+    if (user) {
+      req.session.regenerate(function () {
+        req.session.user = user;
+        //res.redirect('back');
+        // res.send({
+        //   message: user
+        // });
+        res.redirect('/');
+      });
+    } else {
+      res.redirect('/login');
+    }
+  });
+});
+
+app.get('/api/logout', function (req, res) {
+  req.session.destroy(function () {
+    res.redirect('/login');
   });
 });
 

@@ -7,6 +7,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="xmas-list">
+        <Navbar />
         <RouteHandler />
         <Footer />
       </div>

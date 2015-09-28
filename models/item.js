@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 
 var itemSchema = new mongoose.Schema({
+  _creator: [{
+    type: Number,
+    ref: 'User'
+  }],
   name: {
     type: String
   },

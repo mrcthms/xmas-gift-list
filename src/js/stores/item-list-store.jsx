@@ -12,7 +12,7 @@ class ItemListStore {
   }
 
   onGetItemsFail(jqXhr) {
-    console.error(jqXhr.responseJSON.message);
+    console.error(jqXhr.responseText);
   }
 
   onUpdateStatusOfItemsSuccess(data) {
