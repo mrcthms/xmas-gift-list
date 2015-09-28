@@ -33,7 +33,7 @@ class AddItemActions {
         this.actions.clearFields(refs);
       })
       .fail((jqXhr) => {
-        this.actions.addItemFail(jqXhr.responseJSON.message);
+        this.actions.addItemFail(jqXhr.responseText);
       });
   }
 }

@@ -32,7 +32,6 @@ class AddItemStore {
   }
 
   onClearFields(refs) {
-    console.log(refs);
 
     var fields = ['name', 'url', 'price', 'isBought', 'assignee', 'whoFor'];
     fields.forEach((field) => {
