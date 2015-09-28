@@ -28,15 +28,15 @@ class ItemList extends React.Component {
   }
 
   onChange(state) {
-    console.log(state);
+    //console.log(state);
     this.setState(state);
   }
 
   render() {
-    console.log(this.state);
+    //console.log(this.state);
     var itemsList = this.state.items.map((item) => {
       return (
-        <Item id={ item._id } key={ item._id } />
+        <Item id={item._id} key={item._id} />
       );
     }) || [];
 

@@ -5,7 +5,9 @@ class Home extends React.Component {
   render() {
     return (
       <div className="xmas-list">
-        <ItemList />
+        <ItemList>
+          { this.props.children }
+        </ItemList>
       </div>
     );
   }

@@ -28,7 +28,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/items', function (req, res, next) {
   Item.find({}, function (err, items) {
-    console.log(items);
 
     if (err) {
       return next(err);
