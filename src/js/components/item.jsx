@@ -8,19 +8,12 @@ class Item extends React.Component {
     super(props);
     this.state = ItemStore.getState();
     this.onChange = this.onChange.bind(this);
-    // this.id = this.props.id;
-    // if (this.props.params && this.props.params.id) {
-    //   this.id = this.props.params.id;
-    // }
-    if (!this.props.params && this.props.id) {
-      this.props.params = {};
-      this.props.params.id = this.props.id;
-    }
   }
 
   componentDidMount() {
 
     ItemStore.listen(this.onChange);
+    console.log('mount', this.props.params.id);
     ItemActions.getItem(this.props.params.id);
   }
 
@@ -36,7 +29,6 @@ class Item extends React.Component {
   }
 
   onChange(state) {
-    console.log('item', state._id);
     this.setState(state);
   }
 
@@ -70,9 +62,9 @@ class Item extends React.Component {
           <span className='line-item__label'>Who is the recipient?</span>
           <span className='line-item__value'>{this.state.whoFor}</span>
         </span>
-        <span className='line-item__property line-item__property--status' ref='isBought' onClick={this.handleIsBoughtClick.bind(this)}>
+        <span className='line-item__property line-item__property--status' ref='isBought'>
           <span className='line-item__label'>Is it bought?</span>
-          <span className='line-item__value'>{this.state.isBought}</span>
+          <span className='line-item__value'>{this.state.isBought === true ? 'Yes' : 'No'}</span>
         </span>
       </div>
     );

@@ -14,6 +14,14 @@ class ItemListStore {
   onGetItemsFail(jqXhr) {
     console.error(jqXhr.responseJSON.message);
   }
+
+  onUpdateStatusOfItemsSuccess(data) {
+    ItemListActions.getItems();
+  }
+
+  onUpdateStatusOfItemsFail(jqXhr) {
+    console.error(jqXhr.responseText);
+  }
 }
 
 export default alt.createStore(ItemListStore);

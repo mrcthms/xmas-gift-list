@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { isEqual } from 'underscore';
-import Item from './item.jsx';
+import LineItem from './line-item.jsx';
 import ItemListStore from '../stores/item-list-store.jsx';
 import ItemListActions from '../actions/item-list-actions.jsx';
 
@@ -14,7 +14,7 @@ class ItemList extends React.Component {
 
   componentDidMount() {
     ItemListStore.listen(this.onChange);
-    ItemListActions.getItems(this.props.params);
+    ItemListActions.getItems();
   }
 
   componentWillUnmount() {
@@ -28,15 +28,17 @@ class ItemList extends React.Component {
   }
 
   onChange(state) {
-    //console.log(state);
     this.setState(state);
   }
 
+  handleBoughtStatusChange(id, newIsBought) {
+    ItemListActions.updateStatusOfItem(id, newIsBought);
+  }
+
   render() {
-    //console.log(this.state);
     var itemsList = this.state.items.map((item) => {
       return (
-        <Item id={ item._id } key={ item._id } ref={ item.name } />
+        <LineItem {...item} key={ item._id } onBoughtStatusChange={this.handleBoughtStatusChange.bind(this)} />
       );
     }) || [];
 

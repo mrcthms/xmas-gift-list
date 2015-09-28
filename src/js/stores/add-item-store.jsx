@@ -24,6 +24,7 @@ class AddItemStore {
   onAddItemSuccess(successMessage) {
     this.nameValidationState = 'has-success';
     this.helpBlock = successMessage;
+    this.isBought = this.isBought === true ? 'Yes' : 'No';
   }
 
   onAddItemFail(errorMessage) {
@@ -32,10 +33,14 @@ class AddItemStore {
   }
 
   onClearFields(refs) {
-
     var fields = ['name', 'url', 'price', 'isBought', 'assignee', 'whoFor'];
     fields.forEach((field) => {
       React.findDOMNode(refs[field]).value = '';
+      if(field === 'isBought') {
+        this[field] = false;
+      } else {
+        this[field] = '';
+      }
     });
   }
 

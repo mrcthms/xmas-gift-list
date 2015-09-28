@@ -5,11 +5,13 @@ class ItemListActions {
   constructor() {
     this.generateActions(
       'getItemsSuccess',
-      'getItemsFail'
+      'getItemsFail',
+      'updateStatusOfItemsSuccess',
+      'updateStatusOfItemsFail'
     );
   }
 
-  getItems(payload) {
+  getItems() {
     var url = '/api/items';
     $.ajax({
       url: url
@@ -19,6 +21,20 @@ class ItemListActions {
       })
       .fail((jqXhr) => {
         this.actions.getItemsFail(jqXhr);
+      });
+  }
+
+  updateStatusOfItem(id, newIsBought) {
+    $.ajax({
+      url: '/api/items/' + id + '/isBought',
+      type: 'PUT',
+      data: { isBought: newIsBought }
+    })
+      .done((data) => {
+        this.actions.updateStatusOfItemsSuccess(data);
+      })
+      .fail((jqXhr) => {
+        this.actions.updateStatusOfItemsFail(jqXhr);
       });
   }
 }

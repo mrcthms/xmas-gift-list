@@ -114,24 +114,15 @@ app.get('/api/items/:id', function (req, res, next) {
 app.put('/api/items/:id/:prop', function (req, res, next) {
   var id = req.params.id;
   var prop = req.params.prop;
-  // var name = req.body.name;
-  // var url = req.body.url;
-  // var price = req.body.price;
-  // var isBought = req.body.isBought;
-  // var assignee = req.body.assignee;
-  // var whoFor = req.body.whoFor;
   var newValue = req.body[prop];
+
+  //console.log(req, prop, newValue);
   Item.findOne({
     _id: id
   }, function (err, item) {
-    // item.name = name;
-    // item.url = url;
-    // item.price = price;
-    // item.isBought = isBought;
-    // item.assignee = assignee;
-    // item.whoFor = whoFor;
+    console.log(item);
     item[prop] = newValue;
-
+    console.log(item);
     item.save(function (err) {
       if (err) {
         return next(err);
