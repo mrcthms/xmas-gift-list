@@ -40,15 +40,13 @@ class Item extends React.Component {
   render () {
     return (
       <div className='line-item'>
-        <span className='line-item__property line-item__property--meta'>
-          <span className='line-item__property line-item__property--name' ref='name'>
-            <span className='line-item__label'>Name</span>
-            <span className='line-item__value'>{this.state.name}</span>
-          </span>
-          <span className='line-item__property line-item__property--url' ref='url'>
-            <span className='line-item__label'>Url</span>
-            <span className='line-item__value'>{this.state.url}</span>
-          </span>
+        <span className='line-item__property line-item__property--name' ref='name'>
+          <span className='line-item__label'>Name</span>
+          <span className='line-item__value'>{this.state.name}</span>
+        </span>
+        <span className='line-item__property line-item__property--url' ref='url'>
+          <span className='line-item__label'>Url</span>
+          <span className='line-item__value'>{this.state.url}</span>
         </span>
         <span className='line-item__property line-item__property--price' ref='price'>
           <span className='line-item__label'>Price</span>

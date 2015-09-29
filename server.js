@@ -21,7 +21,6 @@ function restrict(req, res, next) {
     next();
   } else {
     req.session.error = 'Access denied';
-    res.redirect('/login');
   }
 }
 
@@ -36,12 +35,14 @@ app.set('port', process.env.PORT || 6789);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 // Session
 app.use(session({
-  resave: true,
+  resave: false,
   saveUninitialized: false,
   secret: 'ssh, it is a secret'
 }));
+
 // Session persisted message middleware
 app.use(function (req, res, next) {
   var err = req.session.error;
@@ -50,7 +51,7 @@ app.use(function (req, res, next) {
   delete req.session.success;
   res.locals.message = '';
   if (err) {
-    res.locals.message = '<p class="msg msg--error">' +  err +  '</p>';
+    res.locals.message = '<p class="msg msg--error">' + err + '</p>';
   }
   if (msg) {
     res.locals.message = '<p class="msg msg--success">' + msg + '</p>';
@@ -60,124 +61,125 @@ app.use(function (req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/api/items', function (req, res, next) {
-  Item.find({}, function (err, items) {
+// app.get('/api/items', restrict, function (req, res, next) {
+//   Item.find({}, function (err, items) {
 
-    if (err) {
-      return next(err);
-    }
+//     if (err) {
+//       return next(err);
+//     }
 
-    if (!items) {
-      return res.status(404).send({ message: 'No items found.' });
-    }
+//     if (!items) {
+//       return res.status(404).send({ message: 'No items found.' });
+//     }
 
-    res.send(items);
-  });
-});
+//     res.send(items);
+//   });
+// });
 
-/**
- * POST /api/items
- * Adds new items to the database
- */
-app.post('/api/items', function (req, res, next) {
-  var name = req.body.name;
-  var url = req.body.url;
-  var price = req.body.price;
-  var isBought = req.body.isBought;
-  var assignee = req.body.assignee;
-  var whoFor = req.body.whoFor;
+// /**
+//  * POST /api/items
+//  * Adds new items to the database
+//  */
+// app.post('/api/items', restrict, function (req, res, next) {
+//   var name = req.body.name;
+//   var url = req.body.url;
+//   var price = req.body.price;
+//   var isBought = req.body.isBought;
+//   var assignee = req.body.assignee;
+//   var whoFor = req.body.whoFor;
 
-  var item = new Item({
-    name: name,
-    url: url,
-    price: price,
-    isBought: isBought,
-    assignee: assignee,
-    whoFor: whoFor
-  });
+//   var item = new Item({
+//     name: name,
+//     url: url,
+//     price: price,
+//     isBought: isBought,
+//     assignee: assignee,
+//     whoFor: whoFor,
+//     _creator: req.session.user._id
+//   });
 
-  item.save(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.send({
-      message: name + ' added successfully'
-    });
-  });
-});
+//   item.save(function (err) {
+//     if (err) {
+//       return next(err);
+//     }
+//     res.send({
+//       message: name + ' added successfully'
+//     });
+//   });
+// });
 
 
 
-/**
- * GET /api/items/count
- * Returns the total number of items
- */
-app.get('/api/items/count', function (req, res, next) {
-  Item.count({}, function (err, count) {
-    if (err) {
-      return next(err);
-    }
-    res.send({
-      count: count
-    });
-  });
-});
+// /**
+//  * GET /api/items/count
+//  * Returns the total number of items
+//  */
+// app.get('/api/items/count', function (req, res, next) {
+//   Item.count({}, function (err, count) {
+//     if (err) {
+//       return next(err);
+//     }
+//     res.send({
+//       count: count
+//     });
+//   });
+// });
 
-app.get('/api/items/seek-and-destroy-all', function (req, res) {
-  Item.find({}).remove().exec();
-  res.send({
-    message: 'All items deleted'
-  });
-});
+// app.get('/api/items/seek-and-destroy-all', function (req, res) {
+//   Item.find({}).remove().exec();
+//   res.send({
+//     message: 'All items deleted'
+//   });
+// });
 
-app.get('/api/items/:id', function (req, res, next) {
-  var id = req.params.id;
-  Item.findOne({
-    _id: id
-  }, function (err, item) {
+// app.get('/api/items/:id', restrict, function (req, res, next) {
+//   var id = req.params.id;
+//   Item.findOne({
+//     _id: id
+//   }, function (err, item) {
 
-    if (err) {
-      return next(err);
-    }
-    item._creator = req.session.user;
-    console.log(item, req.session);
-    //console.log(item._creator.username);
-    if (!item) {
-      return res.status(404).send({ message: 'Item not found.' });
-    }
+//     if (err) {
+//       return next(err);
+//     }
+//     item._creator = req.session.user;
+//     console.log(item, req.session);
+//     //console.log(item._creator.username);
+//     if (!item) {
+//       return res.status(404).send({ message: 'Item not found.' });
+//     }
 
-    res.send(item);
-  });
-});
+//     res.send(item);
+//   });
+// });
 
-app.put('/api/items/:id/:prop', function (req, res, next) {
-  var id = req.params.id;
-  var prop = req.params.prop;
-  var newValue = req.body[prop];
-  Item.findOne({
-    _id: id
-  }, function (err, item) {
-    item[prop] = newValue;
-    item.save(function (err) {
-      if (err) {
-        return next(err);
-      }
-      res.status(200).end();
-    });
-  });
-});
+// app.put('/api/items/:id/:prop', function (req, res, next) {
+//   var id = req.params.id;
+//   var prop = req.params.prop;
+//   var newValue = req.body[prop];
+//   Item.findOne({
+//     _id: id
+//   }, function (err, item) {
+//     item[prop] = newValue;
+//     item.save(function (err) {
+//       if (err) {
+//         return next(err);
+//       }
+//       res.status(200).end();
+//     });
+//   });
+// });
 
-app.get('/api/items/:id/seek-and-destroy', function (req, res, next) {
-  var id = req.params.id;
-  var item = Item.findOne({
-    _id: id
-  });
-  var itemName = item.name;
-  item.remove().exec();
-  res.send({
-    message: itemName + ' has been removed'
-  });
-});
+// app.get('/api/items/:id/seek-and-destroy', function (req, res, next) {
+//   var id = req.params.id;
+//   var item = Item.findOne({
+//     _id: id
+//   });
+//   var itemName = item.name;
+//   item.remove().exec();
+//   res.send({
+//     message: itemName + ' has been removed'
+//   });
+// });
 
 app.get('/create-admin-user', function (req, res, next) {
   var user = new User();
@@ -205,21 +207,28 @@ app.post('/api/login', function (req, res) {
     if (user) {
       req.session.regenerate(function () {
         req.session.user = user;
-        //res.redirect('back');
-        // res.send({
-        //   message: user
-        // });
-        res.redirect('/');
+        //console.log(user, req.session);
+        res.send({
+          message: user
+        });
       });
     } else {
-      res.redirect('/login');
+      //res.redirect('/login');
     }
   });
 });
 
 app.get('/api/logout', function (req, res) {
   req.session.destroy(function () {
-    res.redirect('/login');
+    res.send({
+      message: 'Logged out'
+    });
+  });
+});
+
+app.get('/api/current-user', function (req, res) {
+  res.send({
+    message: req.session.user
   });
 });
 

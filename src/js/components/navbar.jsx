@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import NavbarStore from '../stores/navbar-store.jsx';
 import NavbarActions from '../actions/navbar-actions.jsx';
+import LoginStore from '../stores/login-store.jsx';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -13,23 +14,6 @@ class Navbar extends React.Component {
 
   componentDidMount() {
     NavbarStore.listen(this.onChange)
-    NavbarActions.getCharacterCount();
-
-    var socket = io.connect();
-
-    socket.on('onlineUsers', (data) => {
-      NavbarActions.updateOnlineUsers(data);
-    });
-
-    $(document).ajaxStart(() => {
-      NavbarActions.updateAjaxAnimation('fadeIn');
-    });
-
-    $(document).ajaxComplete(() => {
-      setTimeout(() => {
-        NavbarActions.updateAjaxAnimation('fadeOut');
-      }, 750);
-    });
   }
 
   componentWillUnmount() {
@@ -40,23 +24,16 @@ class Navbar extends React.Component {
     this.setState(state);
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    var searchQuery = this.state.searchQuery.trim();
-    if (searchQuery) {
-      NavbarActions.findCharacter({
-        searchQuery: searchQuery,
-        searchForm: this.refs.searchForm.getDOMNode(),
-        router: this.context.router
-      });
-    }
-  }
-
   render() {
+    var loggedInOrOut = this.state.loggedIn ?
+      <li><Link to='/logout'>Logout</Link></li> :
+      <li><Link to='/login'>Login</Link></li>;
     return (
       <nav className='navbar navbar-default navbar-static-top'>
         <ul className='nav navbar-nav'>
           <li><Link to='/'>Home</Link></li>
+          {loggedInOrOut}
+          <li>{'No current user'}</li>
         </ul>
       </nav>
     );

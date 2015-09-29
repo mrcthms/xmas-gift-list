@@ -5,6 +5,7 @@ import Home from '../components/home.jsx';
 import AddItem from '../components/add-item.jsx';
 import Item from '../components/item.jsx';
 import Login from '../components/login.jsx';
+import Logout from '../components/logout.jsx';
 
 export default (
   <Route handler={App}>
@@ -12,5 +13,6 @@ export default (
     <Route path='/add' handler={AddItem} />
     <Route path='/items/:id' handler={Item} />
     <Route path='/login' handler={Login} />
+    <Route path='/logout' handler={Logout} />
   </Route>
 );

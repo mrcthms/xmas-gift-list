@@ -11,11 +11,14 @@ class LoginStore {
     this.helpBlock = '';
     this.usernameValidationState = '';
     this.passwordValidationState = '';
+    this.loggedInUser = null;
   }
 
-  onLoginSuccess(successMessage) {
+  onLoginSuccess(data) {
     this.usernameValidationState = 'has-success';
-    this.helpBlock = 'Logged in successfully';
+    this.helpBlock = `Logged in successfully as ${data.message.username}`;
+    localStorage.setItem('token', data.message._id);
+    this.loggedInUser = data.message;
   }
 
   onloginFail(errorMessage) {
@@ -42,6 +45,10 @@ class LoginStore {
   onInvalidPassword() {
     this.urlValidationState = 'has-error';
     this.helpBlock = 'Please also enter a password';
+  }
+
+  onIsLoggedIn() {
+    return !!this.loggedInUser;
   }
 
 }

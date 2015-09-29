@@ -59,7 +59,7 @@ class Login extends React.Component {
                   <span className='help-block'>{this.state.helpBlock}</span>
                   <div className={'form-group ' + this.state.usernameValidationState}>
                     <label className='control-label'>Username</label>
-                    <input type='text' className='form-control' ref='name' value={this.state.username}
+                    <input type='text' className='form-control' ref='username' value={this.state.username}
                            onChange={LoginActions.updateUsername} autoFocus/>
                   </div>
                   <div className={'form-group ' + this.state.passwordValidationState}>

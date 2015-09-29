@@ -9,7 +9,8 @@ class LoginActions {
       'updateUsername',
       'updatePassword',
       'invalidUsername',
-      'invalidPassword'
+      'invalidPassword',
+      'isLoggedIn'
     );
   }
 
@@ -21,11 +22,15 @@ class LoginActions {
     })
       .done((data) => {
         this.actions.loginSuccess(data);
-        //Router.Navigation.transitionTo('/');
+        this.actions.isLoggedIn();
       })
       .fail((jqXhr) => {
         this.actions.loginFail(jqXhr.responseText);
       });
+  }
+
+  logoutUser() {
+    localStorage.removeItem('token');
   }
 }
 
